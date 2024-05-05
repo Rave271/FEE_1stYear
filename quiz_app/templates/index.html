@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blitz Quiz </title>
+    {% load static %}
+<link rel="stylesheet" href="{% static '91.css' %}">
+    <link rel="icon" href="icon505.png">
+</head>
+<body>
+<video  autoplay loop muted plays-inline class="videobackground">
+    <source src="{% static 'waves.mp4' %}">
+    
+    </video>
+    
+        <header class="header">
+            <a href="#" class="logo"  onclick="location.href = 'Project.html';" id="myButton">BQ</a>
+            <nav class="navbar">
+                <a href="{% url 'reset'%}">Contact</a>
+                
+                
+            </nav>
+        </header>
+<div class="container">
+      <section class="quiz-section">
+        <div class="quiz-box">
+            <h1>FEE Quiz</h1>
+            <div class="quiz-header">
+                tiple Language</span>
+                   
+    </div>
+<div class="option-list">
+  <div class="option">
+    <span></span>
+    </div>
+</div>
+     
+        </div>
+      </section>
+
+        <section class="home">
+            <div class="home-content">
+                <h1>BlitzQuiz</h1>
+               
+                <p> Welcome to BQ,a modern and innovatice way of testing your knowledge.</p>
+                <button class="start-btn" onclick="location.href = '{% url 'login' %}';" id="myButton">Continue to Log in</button>
+             
+
+                <!-- <button class="start-btn" onclick="location.href = 'login.html';" id="myButton">Continue to Log in</button> -->
+            </div>
+        </section>
+        </div>
+    </main>
+
+    
+
+</body>
+</html>

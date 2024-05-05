@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href=  "{% static '91.css' %}"/>
+    <link rel="icon" href="{% static 'icon505.png' %}">
+    <style>
+        @keyframes progressBar {
+    0%, 100% {
+        width: 100%;
+    }
+    50% {
+        width: 0;
+    }
+}
+  .progress-container {
+    width: 65vw;
+    background-color: transparent;
+    height: 3vh;
+    
+    position: relative;
+  }
+
+  .progress-bar {
+   
+    height: 100%;
+    background-color: #c40094;
+    animation: progressBar 10s linear forwards;
+    animation-iteration-count: infinite;
+    text-align: center;
+    
+    
+  }
+  .progress-bar p{
+    text-align: center;
+    position: fixed;
+  }
+
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="videoplayback">
+        <video autoplay muted loop>
+            <source src="{% static 'decca.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo">Quiz</a>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <nav class="navbarQ">
+            <a href="confirmationforq1.html">Exit</a>
+        </nav>
+    </header>
+
+    <div class="qboxfullpage">
+        <div class="qboxA" id="quiz-container">
+            <h2 class="qboxHeading" id="questionTitle"></h2>
+            <form id="quiz-form">
+                <div class="optionbox" id="options-container"></div>
+                <button class="submit-Button" id="submit-Button" type="button" onclick="submitAnswer()">Submit</button>
+                <button class="next-button" id="next-Button" type="button" onclick="nextQuestion()">Next</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    localStorage.setItem("score", 0);
+        const questions = [
+            {
+                title: "What is the basic building block of digital circuits?",
+                options: ["Resistor", "Capacitor", "Transistor", "IC"],
+                correctAnswer: "Transistor"
+            },
+            {
+                title: "In a binary number system, what is the decimal equivalent of the binary number 1101?",
+                options: ["10", "15", "12", "13"],
+                correctAnswer: "13"
+            },
+            {
+                title: "Which flip-flop is commonly used for storing one bit of data?",
+                options: ["JK flip-flop", "SR flip-flop", "T flip-flop", "D flip-flop"],
+                correctAnswer: "D flip-flop"
+            },
+            {
+                title: "Which logic gate performs the operation of addition in binary arithmetic?",
+                options: ["XOR gate", "OR gate", "AND gate", "NAND gate"],
+                correctAnswer: "XOR gate"
+            },
+            {
+                title: "What does the acronym IC stand for in the context of digital electronics?",
+                options: ["Integrated Circuit", "Inverted Capacitor", "Inductive Coil", "Input Controller"],
+                correctAnswer: "Integrated Circuit"
+            },
+            // Add more questions...
+        ];
+
+        let currentQuestionIndex = 0;
+        let timer;
+
+
+
+        function nextQuestion() {
+
+    // Remove the correct and incorrect classes from the options
+    document.querySelectorAll('#options-container label').forEach(label => {
+        label.classList.remove('correct');
+        label.classList.remove('incorrect');
+    });
+
+    // Increment the current question index
+    currentQuestionIndex++;
+
+    // Check if there are more questions
+    if (currentQuestionIndex < questions.length) {
+        // Display the next question
+        displayQuestion();
+    } else {
+        // If there are no more questions, you can redirect to a results page or display a message
+        let score = localStorage.getItem("score") || 0;
+        window.location.href = '{% url "end" %}?score=' + score + '&questions=' + questions.length;;
+    }
+
+    setTimeout(() => {
+        // Remove the correct and incorrect classes from the options
+        // Increment the current question index
+        // Check if there are more questions
+        // Display the next question
+
+        questionContainer.classList.remove('fade-out');
+    }, 1000)
+}    
+
+        function displayQuestion() {
+            clearTimeout(timer);
+
+
+            
+    const question = questions[currentQuestionIndex];
+    const questionTitle = document.getElementById("questionTitle");
+    const optionsContainer = document.getElementById("options-container");
+
+    questionTitle.textContent = question.title;
+    optionsContainer.innerHTML = "";
+
+    let selectedLabel = null;
+
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement("label");
+        const radioInput = document.createElement("input");
+
+        radioInput.type = "radio";
+        radioInput.name = "option";
+        radioInput.id = "option" + index;
+        radioInput.value = option;
+
+        optionElement.textContent = option;
+        optionElement.htmlFor = radioInput.id;
+        optionElement.prepend(radioInput);
+
+        radioInput.addEventListener("change", function() {
+            if (selectedLabel) {
+                selectedLabel.classList.remove("selected");
+            }
+            optionElement.classList.add("selected");
+            selectedLabel = optionElement;
+        });
+
+        optionsContainer.appendChild(optionElement);
+    });
+    timer = setTimeout(() => {
+        nextQuestion();
+    }, 5000);
+    
+}
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+
+            if (!selectedOption) {
+                alert("Please select an option before submitting.");
+                return;
+            }
+
+            if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+                selectedOption.parentElement.classList.add("correct");
+                let score = localStorage.getItem("score") || 0;
+                localStorage.setItem("score", ++score);
+            } else {
+                selectedOption.parentElement.classList.add("incorrect");
+            }
+
+            selectedOption.checked = false;
+        }
+
+        function submitAnswer() {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    const correctOption = Array.from(document.querySelectorAll('input[name="option"]')).find(option => option.value === questions[currentQuestionIndex].correctAnswer);
+
+    if (!selectedOption) {
+        alert("Please select an option before submitting.");
+        
+        return;
+    }
+
+    if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+        let score = localStorage.getItem("score") || 0;
+        localStorage.setItem("score", ++score);
+    } else {
+        selectedOption.parentElement.classList.add("incorrect");
+    }
+
+    correctOption.parentElement.classList.add("correct");
+    selectedOption.checked = false;
+}
+
+        displayQuestion();
+    </script>
+</body>
+</html>

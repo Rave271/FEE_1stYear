@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide</title>
+    <!-- <link rel="stylesheet" href="{% static '91.css' %}"/> -->
+    <link rel="stylesheet" href="91.css"/>
+    <link rel="icon" href="{% static 'icon505.png' %}g">
+    <style>
+        /* Add your CSS styles here */.button-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto; /* Center the container */
+}
+
+.start-btn.button-top {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.start-btn.button-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 100%; /* Adjust this value to move the button to the right */
+}
+
+.start-btn.button-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 100%; /* Adjust this value to move the button to the left */
+}
+</style>
+<body>
+    <main class="main">
+        <header class="header">
+            <a href="{% static 'index.html' %}" class="logo"  onclick=location.href = 'Project.html';" id="myButton">Quiz</a>
+
+
+            <nav class="navbar">
+                <a href="{% static 'login.html' %}">Go back to login</a>
+               
+            </nav>
+        </header>
+    
+
+        
+              <div class="container" style="margin-left: 675px;">
+        <section class="home"  >
+            <div class="home-content">
+                <h1>Guide</h1>
+                
+                <p>Select the a topic and press start.Select the correct option & press submit.Press the next button to move over tot he next quesiton.Remember all the premade quizes have a 15 second timer on every question after which the question will be skipped</p>
+                
+                <div class="button-container">
+                    <button class="start-btn button-top" onclick="location.href = '{% static 'reset.html' %}';" id="myButton1">Reset password</button>
+                    <button class="start-btn button-bottom-left" onclick="location.href = 'quizselection.html';" id="myButton2">High Score</button>
+                    <button class="start-btn button-bottom-right" onclick="location.href = 'quizselection.html';" id="myButton3">Leaderboard</button>
+                </div>
+            </section>
+        </div>
+</body>
+</html>

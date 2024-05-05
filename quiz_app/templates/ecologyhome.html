@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide</title>
+    <link rel="stylesheet" href=  "{% static '91.css' %}"/>
+    <link rel="icon" href="{% static 'icon505.png' %}">
+
+<body>
+    <div class="videoplayback">
+        <video autoplay muted loop>
+            <source src="{% static 'vj.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+        <header class="header">
+            <a href="project.html" class="logo"  onclick=location.href ="{% url 'home' %}";" id="myButton">BQ</a>
+
+
+            <nav class="navbar">
+                <a href="{% url 'quizselection' %}">Go back</a>
+               
+            </nav>
+        </header>
+    
+
+        
+              <div class="container" style="margin-left: 675px;">
+        <section class="home"  >
+            <div class="home-content">
+                <h1 style="font-size: 450%;">Quiz on Ecology</h1>
+                <p> This quiz will test your knowledege on basic biodiversity.</p>
+                <a class="start-btn" href = "{% url 'ecology' %}" ;" id="myButton" style="padding-left: 10px;padding-right: 10px;text-align: center;padding-top: 10px;">Begin</a>
+            </section>
+        </div>
+</body>
+</html>

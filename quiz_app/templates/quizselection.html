@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide</title>
+    <link rel="stylesheet" href="{% static '91.css' %}"/>
+    <link rel="stylesheet" href='91.css'/>
+  
+    <link rel="icon" href="{% static 'icon505.png' %}">
+    <header class="header">
+        <a href="index.html" class="logo"  onclick=location.href = 'Project.html';" id="myButton">BQ</a>
+
+
+        <nav class="navbar">
+           
+            <a href="{% url 'home' %}">Profile</a>
+           
+           
+        </nav>
+
+    <style>
+        body {
+            background-image: url({% static 'background.jpg' %});
+            background-size: cover;
+        }
+        body p{
+            font-size: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .grid-container {
+            margin-top: 150px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-item {
+    margin-left: 70px; /* Adjust this value as needed */
+}
+
+.grid-item img {
+    width: 85%;
+    height: auto;
+}
+.grid-item :hover{
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+    .button-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto; /* Center the container */
+}
+    </style>
+    </header>
+    <body>
+    
+
+    <div class="grid-container">
+        <div class="grid-item">
+            <!-- <a href='{% url 'f1' %}'><img src='f1.png' alt="Image 1"></a>
+        </div>
+        <div class="grid-item">
+            <a href="#"><img src='Astronomy.jpg' alt="Image 2"></a>
+        </div>
+        <div class="grid-item">
+            <a href="#"><img src='Economics.png' alt="Image 3"></a>
+        </div>
+        <div class="grid-item">
+            <a href="#"><img src='Ecology.png' alt="Image 4"></a>
+        </div>
+        <div class="grid-item">
+            <a href="#"><img src='deca.png' alt="Image 5"></a>
+        </div>
+        <div class="grid-item">
+            <a href="#"><img src='fee.png' alt="Image 6"></a>
+        </div> -->
+            <a href="{% url 'f1home' %}"><img src="{% static 'f1.png' %}" alt="Image 1"></a>
+        </div>
+        <div class="grid-item">
+            <a href="{% url 'astronomyhome' %}"><img src="{% static 'Astronomy.jpg' %}" alt="Image 2"></a>
+        </div>
+        <div class="grid-item">
+            <a href="{% url 'economicshome' %}"><img src="{% static 'Economics.png' %}" alt="Image 3"></a>
+        </div>
+        <div class="grid-item">
+            <a href="{% url 'ecologyhome' %}"><img src="{% static 'Ecology.png' %}" alt="Image 4"></a>
+        </div>
+        <div class="grid-item">
+            <a href="{% url 'decahome' %}"><img src="{% static 'deca.png' %}" alt="Image 5"></a>
+        </div>
+        <div class="grid-item">
+            <a href="{% url 'feehome' %}"><img src="{% static 'fee.png' %}" alt="Image 6"></a>
+        </div>
+    </div>

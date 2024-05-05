@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide</title>
+    <!-- <link rel="stylesheet" href="{% static '91.css' %}"/> -->
+    <link rel="stylesheet" href="{% static '91.css' %}"/>
+    <link rel="icon" href="{% static 'icon505.png' %}g">
+    <style>
+        /* Add your CSS styles here */.button-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto; /* Center the container */
+}
+
+.start-btn.button-top {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.start-btn.button-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 100%; /* Adjust this value to move the button to the right */
+}
+
+.start-btn.button-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 100%; /* Adjust this value to move the button to the left */
+}
+</style>
+<body>
+    <main class="main">
+        <header class="header">
+            <a href="{% url 'index' %}" class="logo"  onclick=location.href = 'Project.html';" id="myButton">BQ</a>
+
+
+            <nav class="navbar">
+                <a href="{% url 'login' %}">Go back to login</a>
+               
+            </nav>
+        </header>
+    
+
+        
+              <div class="container" style="margin-left: 675px;">
+        <section class="home"  >
+            <div class="home-content">
+                <h1>Welcome</h1>
+                
+                
+                <div class="button-container">
+                    <button class="start-btn button-top" onclick="location.href = '{% url 'guide' %}';" id="myButton1">Quizes</button>
+                    <button class="start-btn button-bottom-left" onclick="location.href = '{% url 'history' %}';" id="myButton2">High Score</button>
+                    <button class="start-btn button-bottom-right" onclick="location.href = '{% url 'leaderboard' %}';" id="myButton3">Leaderboard</button>
+                </div>
+            </section>
+        </div>
+</body>
+</html>

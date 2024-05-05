@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href=  "{% static '91.css' %}"/>
+    <link rel="icon" href="{% static 'icon505.png' %}">
+    <style>
+        @keyframes progressBar {
+    0%, 100% {
+        width: 100%;
+    }
+    50% {
+        width: 0;
+    }
+}
+  .progress-container {
+    width: 65vw;
+    background-color: transparent;
+    height: 3vh;
+    
+    position: relative;
+  }
+
+  .progress-bar {
+   
+    height: 100%;
+    background-color: #c40094;
+    animation: progressBar 10s linear forwards;
+    animation-iteration-count: infinite;
+    text-align: center;
+    
+    
+  }
+  .progress-bar p{
+    text-align: center;
+    position: fixed;
+  }
+
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="videoplayback">
+        <video autoplay muted loop>
+            <source src="{% static 'vj.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo">Quiz</a>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <nav class="navbarQ">
+            <a href="confirmationforq1.html">Exit</a>
+        </nav>
+    </header>
+
+    <div class="qboxfullpage">
+        <div class="qboxA" id="quiz-container">
+            <h2 class="qboxHeading" id="questionTitle"></h2>
+            <form id="quiz-form">
+                <div class="optionbox" id="options-container"></div>
+                <button class="submit-Button" id="submit-Button" type="button" onclick="submitAnswer()">Submit</button>
+                <button class="next-button" id="next-Button" type="button" onclick="nextQuestion()">Next</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    localStorage.setItem("score", 0);
+        const questions = [
+            {
+                title: "Which team holds the record for the most Constructors' Championships?",
+                options: ["Ferrari", "Mercedes", "Red Bull Racing", "McLaren"],
+                correctAnswer: "Red Bull Racing"
+            },
+            {
+                title: "Who is the current reigning Formula 1 World Champion?",
+                options: ["Lewis Hamilton", "Sebastian Vettel", "Max Verstappen", "Valtteri Bottas"],
+                correctAnswer: "Max Verstappen"
+            },
+            {
+                title: "Which of the following is NOT a part of the Formula 1 driver's pit crew?",
+                options: [" Race Strategist", "Jack Person", "Aerodynamicist", "Mechanic"],
+                correctAnswer: "Jack Person"
+            },
+            {
+                title: "What is the term used for the position a driver starts a race in Formula 1?",
+                options: ["Qualifying Time", "Grid Position", " Pit Stop Lap", "Finishing Position"],
+                correctAnswer: "Grid Position"
+            },
+            {
+                title: "How many points are awarded to the winner of a Formula 1 Grand Prix race (as of 2024)?",
+                options: ["10 points", "20 points", "25 points", "35 points"],
+                correctAnswer: "25 points"
+            },
+            // Add more questions...
+        ];
+
+        let currentQuestionIndex = 0;
+        let timer;
+
+
+
+        function nextQuestion() {
+
+    // Remove the correct and incorrect classes from the options
+    document.querySelectorAll('#options-container label').forEach(label => {
+        label.classList.remove('correct');
+        label.classList.remove('incorrect');
+    });
+
+    // Increment the current question index
+    currentQuestionIndex++;
+
+    // Check if there are more questions
+    if (currentQuestionIndex < questions.length) {
+        // Display the next question
+        displayQuestion();
+    } else {
+        // If there are no more questions, you can redirect to a results page or display a message
+        let score = localStorage.getItem("score") || 0;
+        window.location.href = '{% url "end" %}?score=' + score + '&questions=' + questions.length;;
+    }
+
+    setTimeout(() => {
+        // Remove the correct and incorrect classes from the options
+        // Increment the current question index
+        // Check if there are more questions
+        // Display the next question
+
+        questionContainer.classList.remove('fade-out');
+    }, 1000)
+}    
+
+        function displayQuestion() {
+            clearTimeout(timer);
+
+
+            
+    const question = questions[currentQuestionIndex];
+    const questionTitle = document.getElementById("questionTitle");
+    const optionsContainer = document.getElementById("options-container");
+
+    questionTitle.textContent = question.title;
+    optionsContainer.innerHTML = "";
+
+    let selectedLabel = null;
+
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement("label");
+        const radioInput = document.createElement("input");
+
+        radioInput.type = "radio";
+        radioInput.name = "option";
+        radioInput.id = "option" + index;
+        radioInput.value = option;
+
+        optionElement.textContent = option;
+        optionElement.htmlFor = radioInput.id;
+        optionElement.prepend(radioInput);
+
+        radioInput.addEventListener("change", function() {
+            if (selectedLabel) {
+                selectedLabel.classList.remove("selected");
+            }
+            optionElement.classList.add("selected");
+            selectedLabel = optionElement;
+        });
+
+        optionsContainer.appendChild(optionElement);
+    });
+    timer = setTimeout(() => {
+        nextQuestion();
+    }, 5000);
+    
+}
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+
+            if (!selectedOption) {
+                alert("Please select an option before submitting.");
+                return;
+            }
+
+            if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+                selectedOption.parentElement.classList.add("correct");
+                let score = localStorage.getItem("score") || 0;
+                localStorage.setItem("score", ++score);
+            } else {
+                selectedOption.parentElement.classList.add("incorrect");
+            }
+
+            selectedOption.checked = false;
+        }
+
+        function submitAnswer() {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    const correctOption = Array.from(document.querySelectorAll('input[name="option"]')).find(option => option.value === questions[currentQuestionIndex].correctAnswer);
+
+    if (!selectedOption) {
+        alert("Please select an option before submitting.");
+        
+        return;
+    }
+
+    if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+        let score = localStorage.getItem("score") || 0;
+        localStorage.setItem("score", ++score);
+    } else {
+        selectedOption.parentElement.classList.add("incorrect");
+    }
+
+    correctOption.parentElement.classList.add("correct");
+    selectedOption.checked = false;
+}
+
+        displayQuestion();
+    </script>
+</body>
+</html>

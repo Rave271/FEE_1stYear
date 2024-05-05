@@ -1,0 +1,15 @@
+<!-- score_history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Score History</title>
+</head>
+<body>
+    {% for entry in score_history %}
+    <p>{{ entry.quiz_name }}: {{ entry.score }}</p>
+{% empty %}
+    <p>No score history available.</p>
+{% endfor %}
+</body>
+</html>

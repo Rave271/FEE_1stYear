@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href=  "{% static '91.css' %}"/>
+    <link rel="icon" href="{% static 'icon505.png' %}">
+    <style>
+        @keyframes progressBar {
+    0%, 100% {
+        width: 100%;
+    }
+    50% {
+        width: 0;
+    }
+}
+  .progress-container {
+    width: 65vw;
+    background-color: transparent;
+    height: 3vh;
+    
+    position: relative;
+  }
+
+  .progress-bar {
+   
+    height: 100%;
+    background-color: #c40094;
+    animation: progressBar 10s linear forwards;
+    animation-iteration-count: infinite;
+    text-align: center;
+    
+    
+  }
+  .progress-bar p{
+    text-align: center;
+    position: fixed;
+  }
+
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="videoplayback">
+        <video autoplay muted loop>
+            <source src="{% static 'vj.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+    <header class="header">
+        <a href="{% url 'home' %}" class="logo">Quiz</a>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <nav class="navbarQ">
+            <a href="confirmationforq1.html">Exit</a>
+        </nav>
+    </header>
+
+    <div class="qboxfullpage">
+        <div class="qboxA" id="quiz-container">
+            <h2 class="qboxHeading" id="questionTitle"></h2>
+            <form id="quiz-form">
+                <div class="optionbox" id="options-container"></div>
+                <button class="submit-Button" id="submit-Button" type="button" onclick="submitAnswer()">Submit</button>
+                <button class="next-button" id="next-Button" type="button" onclick="nextQuestion()">Next</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    localStorage.setItem("score", 0);
+        const questions = [
+            {
+                title: "What is the term used to describe the variety of life forms on Earth?",
+                options: ["Sustainability", "Conservation", "Biodiversity ", "Homeostasis"],
+                correctAnswer: "Biodiversity "
+            },
+            {
+                title: "What is the primary factor that contributes to the high biodiversity found in tropical rainforests?",
+                options: [" Cold temperatures", " Limited sunlight", "Abundant rainfall and stable temperatures", "High winds"],
+                correctAnswer: "Abundant rainfall and stable temperatures"
+            },
+            {
+                title: "How does the loss of biodiversity impact an ecosystem?",
+                options: ["Decrease in ecosystem services", "No significant impact", " Increases the overall productivity of the ecosystem.", "Creates new and unique species."],
+                correctAnswer: "Decrease in ecosystem services"
+            },
+            {
+                title: "What is an example of a keystone species that plays a critical role in maintaining a healthy ecosystem?",
+                options: ["Mosquito", "Sea star", "Jellyfish", "Deep sea fish"],
+                correctAnswer: "Sea star"
+            },
+            {
+                title: "What is a potential consequence of climate change for biodiversity?",
+                options: ["No impact on species distribution.", "Lead to shifts in species ranges and habitat loss", "Benefits all plant and animal life", "Slows down the rate of extinction."],
+                correctAnswer: "Lead to shifts in species ranges and habitat loss"
+            },
+            // Add more questions...
+        ];
+
+        let currentQuestionIndex = 0;
+        let timer;
+
+
+
+        function nextQuestion() {
+
+    // Remove the correct and incorrect classes from the options
+    document.querySelectorAll('#options-container label').forEach(label => {
+        label.classList.remove('correct');
+        label.classList.remove('incorrect');
+    });
+
+    // Increment the current question index
+    currentQuestionIndex++;
+
+    // Check if there are more questions
+    if (currentQuestionIndex < questions.length) {
+        // Display the next question
+        displayQuestion();
+    } else {
+        // If there are no more questions, you can redirect to a results page or display a message
+        let score = localStorage.getItem("score") || 0;
+        window.location.href = '{% url "end" %}?score=' + score + '&questions=' + questions.length;;
+    }
+
+    setTimeout(() => {
+        // Remove the correct and incorrect classes from the options
+        // Increment the current question index
+        // Check if there are more questions
+        // Display the next question
+
+        questionContainer.classList.remove('fade-out');
+    }, 1000)
+}    
+
+        function displayQuestion() {
+            clearTimeout(timer);
+
+
+            
+    const question = questions[currentQuestionIndex];
+    const questionTitle = document.getElementById("questionTitle");
+    const optionsContainer = document.getElementById("options-container");
+
+    questionTitle.textContent = question.title;
+    optionsContainer.innerHTML = "";
+
+    let selectedLabel = null;
+
+    question.options.forEach((option, index) => {
+        const optionElement = document.createElement("label");
+        const radioInput = document.createElement("input");
+
+        radioInput.type = "radio";
+        radioInput.name = "option";
+        radioInput.id = "option" + index;
+        radioInput.value = option;
+
+        optionElement.textContent = option;
+        optionElement.htmlFor = radioInput.id;
+        optionElement.prepend(radioInput);
+
+        radioInput.addEventListener("change", function() {
+            if (selectedLabel) {
+                selectedLabel.classList.remove("selected");
+            }
+            optionElement.classList.add("selected");
+            selectedLabel = optionElement;
+        });
+
+        optionsContainer.appendChild(optionElement);
+    });
+    timer = setTimeout(() => {
+        nextQuestion();
+    }, 5000);
+    
+}
+
+        function submitAnswer() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+
+            if (!selectedOption) {
+                alert("Please select an option before submitting.");
+                return;
+            }
+
+            if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+                selectedOption.parentElement.classList.add("correct");
+                let score = localStorage.getItem("score") || 0;
+                localStorage.setItem("score", ++score);
+            } else {
+                selectedOption.parentElement.classList.add("incorrect");
+            }
+
+            selectedOption.checked = false;
+        }
+
+        function submitAnswer() {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    const correctOption = Array.from(document.querySelectorAll('input[name="option"]')).find(option => option.value === questions[currentQuestionIndex].correctAnswer);
+
+    if (!selectedOption) {
+        alert("Please select an option before submitting.");
+        
+        return;
+    }
+
+    if (selectedOption.value === questions[currentQuestionIndex].correctAnswer) {
+        let score = localStorage.getItem("score") || 0;
+        localStorage.setItem("score", ++score);
+    } else {
+        selectedOption.parentElement.classList.add("incorrect");
+    }
+
+    correctOption.parentElement.classList.add("correct");
+    selectedOption.checked = false;
+}
+
+        displayQuestion();
+    </script>
+</body>
+</html>
